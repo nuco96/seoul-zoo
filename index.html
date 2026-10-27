@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>서울동물원 완주 동선</title>
+<meta name="description" content="11월 4일 서울동물원: 리프트로 정상까지 올라가 내려오며 전부 보는 동선, 주차 팁, 체크인 지도">
+<meta property="og:title" content="서울동물원 완주 동선">
+<meta property="og:description" content="리프트로 정상까지, 내려오며 전부 보기 · 11.04 WED">
+<meta name="theme-color" content="#2c6a4c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="동물원 동선">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%A6%92%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+
+/* Layout: one mobile column — sticky "다음 목적지" bar, then checks, parking, schematic map, stop list (wayfinding-sign look) */
+:root{
+  --bg:#f1f4ef; --surface:#ffffff; --ink:#18241d; --muted:#5d6b62; --line:#d5ddd5;
+  --moss:#2c6a4c; --moss-soft:#dcebe2; --amber:#d48a12; --amber-soft:#fbefd8;
+  --warn:#b4402a; --warn-soft:#f8e1dc; --hill:#e3eadf; --dash:#a7b3aa;
+  --grass:#e4eedb; --grass2:#d3e5c6; --ridge:#a9cba0; --ridge2:#8db884; --tree:#86b57f; --tree2:#6c9f66; --sand:#efe2c4; --water:#bfe0ea;
+  --f-display:"Black Han Sans","Noto Sans KR",system-ui,sans-serif;
+  --f-body:"Noto Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111814; --surface:#18221c; --ink:#e7eee8; --muted:#9aa89f; --line:#2c3a31;
+  --moss:#6fc197; --moss-soft:#1f3a2c; --amber:#f0b04a; --amber-soft:#3a2d14;
+  --warn:#f08b72; --warn-soft:#3b201a; --hill:#1c2820; --dash:#4f5e55;
+  --grass:#16211a; --grass2:#1b2a20; --ridge:#25402f; --ridge2:#2d4d38; --tree:#2e5a3d; --tree2:#244a31; --sand:#3a3324; --water:#1d3a45; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111814; --surface:#18221c; --ink:#e7eee8; --muted:#9aa89f; --line:#2c3a31;
+  --moss:#6fc197; --moss-soft:#1f3a2c; --amber:#f0b04a; --amber-soft:#3a2d14;
+  --warn:#f08b72; --warn-soft:#3b201a; --hill:#1c2820; --dash:#4f5e55;
+  --grass:#16211a; --grass2:#1b2a20; --ridge:#25402f; --ridge2:#2d4d38; --tree:#2e5a3d; --tree2:#244a31; --sand:#3a3324; --water:#1d3a45; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2{font-family:var(--f-display);font-weight:400;letter-spacing:.01em;text-wrap:balance;margin:0}
+h1{font-size:2.1rem;line-height:1.15}
+h2{font-size:1.35rem;display:flex;align-items:center;gap:10px}
+h2 .tag{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;color:var(--muted);font-weight:500}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+header{padding-top:20px;display:flex;flex-direction:column;gap:8px}
+h1{font-size:1.7rem}
+.sign{display:inline-flex;align-self:flex-start;align-items:center;gap:8px;background:var(--moss);color:var(--bg);
+  padding:4px 10px;border-radius:4px;font-family:var(--f-mono);font-size:.78rem;letter-spacing:.04em}
+.lede{color:var(--muted);margin:0;max-width:60ch}
+
+/* sticky bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  background:var(--surface);border-bottom:1px solid var(--line);padding-block:10px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar-in{max-width:680px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center}
+.bar .next{font-weight:700;font-size:1rem;min-width:0}
+.bar .next small{display:block;font-weight:500;color:var(--muted);font-size:.8rem}
+.bar .dirchip{font-family:var(--f-mono);font-size:.8rem;padding:4px 8px;border-radius:4px;background:var(--amber-soft);color:var(--ink);white-space:nowrap}
+.prog{grid-column:1/-1;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--moss);width:0;transition:width .3s}
+.pace{grid-column:1/-1;font-size:.8rem;color:var(--muted)}
+.pace.late{color:var(--warn);font-weight:700}
+.sync{grid-column:1/-1;font-size:.78rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.sync::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--dash);flex:none}
+.sync.live::before{background:var(--moss)}
+.sync.err{color:var(--warn)}
+
+section{display:flex;flex-direction:column;gap:12px}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.fact b{font-size:.75rem;color:var(--muted);font-weight:500;letter-spacing:.03em}
+.fact span{font-weight:700}
+.fact em{font-style:normal;font-size:.82rem;color:var(--muted)}
+.fact.ok span{color:var(--moss)}
+@media (max-width:420px){.facts{grid-template-columns:1fr}}
+.alerts{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
+.alerts li{background:var(--warn-soft);border-radius:6px;padding:8px 12px;font-size:.88rem}
+.alerts li b{color:var(--warn)}
+
+.tips{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.tips li{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:12px 14px;border-top:1px solid var(--line)}
+.tips li:first-child{border-top:0}
+.tips .k{font-family:var(--f-mono);color:var(--moss);font-weight:600;padding-top:1px}
+.tips p{margin:0;min-width:0}
+.tips p strong{display:block}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.86rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--muted);font-weight:500}
+td.best{color:var(--moss);font-weight:700}
+
+/* map */
+.mapbox{background:var(--grass);border:1px solid var(--line);border-radius:10px;padding:0;overflow:hidden;position:relative}
+.mapbox .legend{background:var(--surface);padding:8px 12px}
+.mapbox svg{display:block;width:100%;height:auto;max-width:100%}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--muted);padding:4px 6px 2px}
+.legend i{display:inline-block;width:22px;height:0;border-top:3px solid var(--moss);vertical-align:middle;margin-right:6px}
+.legend i.d{border-top:2px dashed var(--dash)}
+.legend i.l{border-top:2px dotted var(--amber)}
+.note{font-size:.8rem;color:var(--muted);margin:0}
+svg .road{fill:none;stroke:var(--sand);stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+svg .leg{fill:none;stroke:var(--dash);stroke-width:2;stroke-dasharray:3 5;stroke-linecap:round}
+svg .leg.done{stroke:var(--moss);stroke-width:4;stroke-dasharray:none}
+svg .leg.next{stroke:var(--amber);stroke-width:3.5;stroke-dasharray:7 5}
+svg .cable{fill:none;stroke:var(--muted);stroke-width:1.2;opacity:.7}
+svg .lift{fill:none;stroke:var(--amber);stroke-width:3;stroke-dasharray:2 9;stroke-linecap:round}
+svg .lift.done{stroke:var(--moss)}
+svg .chair{fill:var(--amber)}
+svg .badge{fill:var(--surface);stroke:var(--dash);stroke-width:2.5}
+svg .node.done .badge{fill:var(--moss-soft);stroke:var(--moss)}
+svg .node.cur .badge{stroke:var(--amber);stroke-width:3.5}
+svg .node.skip{opacity:.45}
+svg .emo{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;font-size:15px;text-anchor:middle;dominant-baseline:central}
+svg .tick{fill:var(--moss)} svg .tickmark{fill:none;stroke:var(--surface);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+svg .node .tickg{display:none} svg .node.done .tickg{display:inline}
+svg .nm{font-family:var(--f-body);font-size:10px;font-weight:700;fill:var(--ink);text-anchor:middle;paint-order:stroke;stroke:var(--grass);stroke-width:3px;stroke-linejoin:round}
+svg .node.skip .nm{text-decoration:line-through}
+svg .node{cursor:pointer}
+svg .node:focus{outline:none}
+svg .node:focus .badge{stroke:var(--ink)}
+svg .halo{fill:none;stroke:var(--amber);stroke-width:2;opacity:.7}
+@media (prefers-reduced-motion:no-preference){svg .halo{animation:pulse 1.6s ease-out infinite;transform-box:fill-box;transform-origin:center}}
+@keyframes pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.9);opacity:0}}
+svg .lbl{font-family:var(--f-mono);font-size:9px;fill:var(--muted);paint-order:stroke;stroke:var(--grass);stroke-width:3px}
+svg .ground{fill:var(--grass)} svg .meadow{fill:var(--grass2)}
+svg .ridge{fill:var(--ridge)} svg .ridge2{fill:var(--ridge2)}
+svg .tr{fill:var(--tree)} svg .tr2{fill:var(--tree2)}
+svg .water{fill:var(--water)} svg .plazaf{fill:var(--sand)}
+
+/* stops */
+.stops{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.stop{display:grid;grid-template-columns:52px 1fr;gap:0 12px;position:relative}
+.rail{display:flex;flex-direction:column;align-items:center}
+.rail .t{font-family:var(--f-mono);font-size:.75rem;color:var(--muted);padding-top:14px}
+.rail .dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--dash);background:var(--bg);margin-top:4px;flex:none}
+.rail .ln{flex:1;width:2px;background:repeating-linear-gradient(var(--dash) 0 4px,transparent 4px 8px);margin-top:4px}
+.stop.done .dot{background:var(--moss);border-color:var(--moss)}
+.stop.done .ln{background:var(--moss)}
+.stop.cur .dot{background:var(--amber);border-color:var(--amber)}
+.stop.skip .dot{background:var(--line);border-color:var(--line)}
+.card{padding:10px 0 18px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.card .hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.card h3{margin:0;font-size:1.05rem;font-weight:700}
+.stop.cur .card{background:var(--amber-soft);border-radius:8px;padding:12px;margin:4px 0 14px}
+.stop.done h3{color:var(--moss)}
+.stop.skip h3{color:var(--muted);text-decoration:line-through}
+.animals{margin:0;color:var(--muted);font-size:.9rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:.75rem;padding:2px 8px;border-radius:999px;background:var(--moss-soft);color:var(--ink)}
+.chip.w{background:var(--warn-soft);color:var(--warn);font-weight:700}
+.chip.h{background:transparent;border:1px solid var(--line);color:var(--muted);font-family:var(--f-mono)}
+.go{font-size:.85rem;color:var(--ink);display:flex;gap:6px;align-items:baseline}
+.go .arr{font-family:var(--f-mono);font-weight:600;color:var(--amber)}
+.stamp{font-family:var(--f-mono);font-size:.78rem;color:var(--moss)}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 14px;min-height:40px}
+button:focus-visible,.node:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+button.primary{background:var(--moss);border-color:var(--moss);color:var(--bg);font-weight:700}
+button.ghost{background:transparent}
+.foot{font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;gap:8px}
+.foot a{color:var(--moss)}
+.foot ul{margin:0;padding-left:18px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+.folds{display:flex;flex-direction:column;gap:10px}
+.fold{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.fold > summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 16px;min-height:48px}
+.fold > summary::-webkit-details-marker{display:none}
+.fold > summary::after{content:"";width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-left:auto;margin-top:-4px;transition:transform .2s;flex:none}
+.fold[open] > summary::after{transform:rotate(-135deg);margin-top:4px}
+.fold > summary:focus-visible{outline:3px solid var(--amber);outline-offset:2px;border-radius:10px}
+.fold .ft{font-family:var(--f-display);font-size:1.15rem}
+.fold .tag{font-family:var(--f-mono);font-size:.72rem;color:var(--muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fold-body{padding:0 16px 16px;display:flex;flex-direction:column;gap:12px}
+@media (prefers-reduced-motion:reduce){.fold > summary::after{transition:none}}
+
+.confirm{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.88rem}
+</style>
+</head>
+<body>
+
+<div class="bar" id="bar">
+  <div class="bar-in">
+    <div class="next" id="barNext">다음: 주차장 → 리프트 1호선 탑승장<small id="barNow">출발 전</small></div>
+    <div class="dirchip" id="barDir">→ 평지</div>
+    <div class="prog" aria-hidden="true"><i id="progFill"></i></div>
+    <div class="pace" id="pace">0 / 0 관람</div>
+    <div class="sync" id="sync">체크 기록은 이 폰에만 저장돼요</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header>
+    <span class="sign num">11.04 WED · 서울동물원</span>
+    <h1>리프트로 정상까지,<br>내려오며 전부 보기</h1>
+    <p class="lede">리프트로 맨 꼭대기까지 올라간 뒤 서쪽 → 가운데 → 동쪽으로 내려오는 동선. 도착할 때마다 <b>도착</b>을 누르면 지도에 지나온 길이 칠해져요.</p>
+  </header>
+
+  <section aria-labelledby="h-map">
+    <h2 id="h-map">동물 지도 <span class="tag">그림 개략도</span></h2>
+    <div class="mapbox">
+      <svg id="map" viewBox="0 0 360 640" role="img" aria-label="서울동물원 동선 그림 지도"><rect class="ground" x="0" y="0" width="360" height="640"></rect><path class="meadow" d="M0 640 L0 470 C60 430 120 520 200 500 C270 482 320 520 360 500 L360 640 Z"></path><path class="ridge" d="M0 0 L360 0 L360 46 C330 30 300 58 262 36 C232 18 210 40 176 24 C150 12 120 34 90 22 C60 10 30 34 0 26 Z"></path><path class="ridge2" d="M0 0 L360 0 L360 22 C320 10 290 30 250 14 C220 4 190 20 160 8 C130 0 100 16 70 6 C40 0 20 12 0 8 Z"></path><ellipse class="water" cx="236" cy="620" rx="48" ry="14"></ellipse><ellipse class="water" cx="300" cy="612" rx="22" ry="8"></ellipse><ellipse class="plazaf" cx="156" cy="470" rx="26" ry="16"></ellipse><circle class="tr2" cx="18" cy="60" r="9"></circle><circle class="tr" cx="24" cy="64" r="6"></circle><circle class="tr" cx="30" cy="104" r="7"></circle><circle class="tr2" cx="36" cy="108" r="5"></circle><circle class="tr2" cx="14" cy="170" r="7"></circle><circle class="tr" cx="20" cy="174" r="5"></circle><circle class="tr" cx="22" cy="214" r="9"></circle><circle class="tr2" cx="28" cy="218" r="6"></circle><circle class="tr2" cx="12" cy="300" r="7"></circle><circle class="tr" cx="18" cy="304" r="5"></circle><circle class="tr" cx="20" cy="380" r="7"></circle><circle class="tr2" cx="26" cy="384" r="5"></circle><circle class="tr2" cx="16" cy="450" r="9"></circle><circle class="tr" cx="22" cy="454" r="6"></circle><circle class="tr" cx="34" cy="520" r="7"></circle><circle class="tr2" cx="40" cy="524" r="5"></circle><circle class="tr2" cx="70" cy="580" r="7"></circle><circle class="tr" cx="76" cy="584" r="5"></circle><circle class="tr" cx="100" cy="610" r="9"></circle><circle class="tr2" cx="106" cy="614" r="6"></circle><circle class="tr2" cx="106" cy="520" r="7"></circle><circle class="tr" cx="112" cy="524" r="5"></circle><circle class="tr" cx="110" cy="236" r="7"></circle><circle class="tr2" cx="116" cy="240" r="5"></circle><circle class="tr2" cx="112" cy="180" r="9"></circle><circle class="tr" cx="118" cy="184" r="6"></circle><circle class="tr" cx="150" cy="110" r="7"></circle><circle class="tr2" cx="156" cy="114" r="5"></circle><circle class="tr2" cx="250" cy="40" r="7"></circle><circle class="tr" cx="256" cy="44" r="5"></circle><circle class="tr" cx="330" cy="62" r="9"></circle><circle class="tr2" cx="336" cy="66" r="6"></circle><circle class="tr2" cx="344" cy="140" r="7"></circle><circle class="tr" cx="350" cy="144" r="5"></circle><circle class="tr" cx="346" cy="196" r="7"></circle><circle class="tr2" cx="352" cy="200" r="5"></circle><circle class="tr2" cx="340" cy="352" r="9"></circle><circle class="tr" cx="346" cy="356" r="6"></circle><circle class="tr" cx="344" cy="540" r="7"></circle><circle class="tr2" cx="350" cy="544" r="5"></circle><circle class="tr2" cx="232" cy="282" r="7"></circle><circle class="tr" cx="238" cy="286" r="5"></circle><circle class="tr" cx="252" cy="330" r="9"></circle><circle class="tr2" cx="258" cy="334" r="6"></circle><circle class="tr2" cx="236" cy="416" r="7"></circle><circle class="tr" cx="242" cy="420" r="5"></circle><circle class="tr" cx="250" cy="468" r="7"></circle><circle class="tr2" cx="256" cy="472" r="5"></circle><circle class="tr2" cx="214" cy="450" r="9"></circle><circle class="tr" cx="220" cy="454" r="6"></circle><circle class="tr" cx="118" cy="300" r="7"></circle><circle class="tr2" cx="124" cy="304" r="5"></circle><circle class="tr2" cx="120" cy="384" r="7"></circle><circle class="tr" cx="126" cy="388" r="5"></circle><circle class="tr" cx="60" cy="480" r="9"></circle><circle class="tr2" cx="66" cy="484" r="6"></circle><circle class="tr2" cx="300" cy="566" r="7"></circle><circle class="tr" cx="306" cy="570" r="5"></circle><circle class="tr" cx="276" cy="256" r="7"></circle><circle class="tr2" cx="282" cy="260" r="5"></circle><text class="lbl" x="10" y="16">▲ 청계산 · 동물원 정상</text><text class="lbl" x="14" y="632">▼ 정문 · 주차장</text><text class="lbl" x="252" y="630">홍학 연못</text><g class="roads"><path class="road" d="M128 58 Q163.52 49.24 200 52"></path><path class="road" d="M200 52 Q150.56 76.32 96 84"></path><path class="road" d="M96 84 Q89.84 109.6 76 132"></path><path class="road" d="M76 132 Q70.32 160.6 56 186"></path><path class="road" d="M56 186 Q55.44 220.96 44 254"></path><path class="road" d="M44 254 Q54.08 291.36 52 330"></path><path class="road" d="M52 330 Q75.04 371.44 84 418"></path><path class="road" d="M84 418 Q124.16 438.24 156 470"></path><path class="road" d="M156 470 Q159.68 441.72 172 416"></path><path class="road" d="M172 416 Q173.36 386.04 184 358"></path><path class="road" d="M184 358 Q170.68 332.44 166 304"></path><path class="road" d="M166 304 Q173.68 275.08 190 250"></path><path class="road" d="M190 250 Q198.68 220.92 216 196"></path><path class="road" d="M216 196 Q224.56 159.76 244 128"></path><path class="road" d="M244 128 Q268.24 112.84 296 106"></path><path class="road" d="M296 106 Q293.24 146.44 278 184"></path><path class="road" d="M278 184 Q302.32 207.8 318 238"></path><path class="road" d="M318 238 Q324.64 266.68 322 296"></path><path class="road" d="M322 296 Q309.32 325.72 288 350"></path><path class="road" d="M288 350 Q309.32 374.28 322 404"></path><path class="road" d="M322 404 Q328.48 431.68 326 460"></path><path class="road" d="M326 460 Q317.16 488.08 300 512"></path><path class="road" d="M300 512 Q284.52 537.04 262 556"></path><path class="road" d="M262 556 Q237.24 574.32 208 584"></path><path class="road" d="M208 584 Q180.76 599.64 150 606"></path></g><g class="liftg"><line class="cable" x1="128" y1="594" x2="128" y2="72"></line><rect class="chair" x="125" y="536" width="6" height="5" rx="1.5"></rect><rect class="chair" x="125" y="478" width="6" height="5" rx="1.5"></rect><rect class="chair" x="125" y="420" width="6" height="5" rx="1.5"></rect><rect class="chair" x="125" y="362" width="6" height="5" rx="1.5"></rect><rect class="chair" x="125" y="304" width="6" height="5" rx="1.5"></rect><rect class="chair" x="125" y="246" width="6" height="5" rx="1.5"></rect><rect class="chair" x="125" y="188" width="6" height="5" rx="1.5"></rect><rect class="chair" x="125" y="130" width="6" height="5" rx="1.5"></rect><text class="lbl" x="110" y="300" transform="rotate(-90 110 300)">스카이리프트 2호선 · 977m</text></g><g class="legs"><path class="lift" d="M128 594 L128 72" data-to="2"></path><path class="leg" d="M128 58 Q163.52 49.24 200 52" data-to="3"></path><path class="leg" d="M200 52 Q150.56 76.32 96 84" data-to="4"></path><path class="leg" d="M96 84 Q89.84 109.6 76 132" data-to="5"></path><path class="leg" d="M76 132 Q70.32 160.6 56 186" data-to="6"></path><path class="leg" d="M56 186 Q55.44 220.96 44 254" data-to="7"></path><path class="leg" d="M44 254 Q54.08 291.36 52 330" data-to="8"></path><path class="leg" d="M52 330 Q75.04 371.44 84 418" data-to="9"></path><path class="leg" d="M84 418 Q124.16 438.24 156 470" data-to="10"></path><path class="leg" d="M156 470 Q159.68 441.72 172 416" data-to="11"></path><path class="leg" d="M172 416 Q173.36 386.04 184 358" data-to="12"></path><path class="leg" d="M184 358 Q170.68 332.44 166 304" data-to="13"></path><path class="leg" d="M166 304 Q173.68 275.08 190 250" data-to="14"></path><path class="leg" d="M190 250 Q198.68 220.92 216 196" data-to="15"></path><path class="leg" d="M216 196 Q224.56 159.76 244 128" data-to="16"></path><path class="leg" d="M244 128 Q268.24 112.84 296 106" data-to="17"></path><path class="leg" d="M296 106 Q293.24 146.44 278 184" data-to="18"></path><path class="leg" d="M278 184 Q302.32 207.8 318 238" data-to="19"></path><path class="leg" d="M318 238 Q324.64 266.68 322 296" data-to="20"></path><path class="leg" d="M322 296 Q309.32 325.72 288 350" data-to="21"></path><path class="leg" d="M288 350 Q309.32 374.28 322 404" data-to="22"></path><path class="leg" d="M322 404 Q328.48 431.68 326 460" data-to="23"></path><path class="leg" d="M326 460 Q317.16 488.08 300 512" data-to="24"></path><path class="leg" d="M300 512 Q284.52 537.04 262 556" data-to="25"></path><path class="leg" d="M262 556 Q237.24 574.32 208 584" data-to="26"></path><path class="leg" d="M208 584 Q180.76 599.64 150 606" data-to="27"></path></g><g class="nodes"><g class="node" tabindex="0" role="button" aria-label="리프트 1호선 → 동물원 입구(북문)" data-id="lift1"><circle class="halo" cx="150" cy="606" r="14" style="display: none;"></circle><circle class="badge" cx="150" cy="606" r="14"></circle><text class="emo" x="150" y="607">🎟️</text><g class="tickg"><circle class="tick" cx="161" cy="596" r="6"></circle><path class="tickmark" d="M158 596 l2 2 l4 -4"></path></g><text class="nm" x="150" y="633">북문(입구)</text></g><g class="node" tabindex="0" role="button" aria-label="입장 → 리프트 2호선 → 정상" data-id="lift2"><circle class="halo" cx="128" cy="58" r="14" style="display: none;"></circle><circle class="badge" cx="128" cy="58" r="14"></circle><text class="emo" x="128" y="59">🚡</text><g class="tickg"><circle class="tick" cx="139" cy="48" r="6"></circle><path class="tickmark" d="M136 48 l2 2 l4 -4"></path></g><text class="nm" x="128" y="85">리프트 하차</text></g><g class="node" tabindex="0" role="button" aria-label="맹수사" data-id="maengsu"><circle class="halo" cx="200" cy="52" r="14" style="display: none;"></circle><circle class="badge" cx="200" cy="52" r="14"></circle><text class="emo" x="200" y="53">🐯</text><g class="tickg"><circle class="tick" cx="211" cy="42" r="6"></circle><path class="tickmark" d="M208 42 l2 2 l4 -4"></path></g><text class="nm" x="200" y="79">맹수사</text></g><g class="node" tabindex="0" role="button" aria-label="동양관" data-id="dongyang"><circle class="halo" cx="96" cy="84" r="14" style="display: none;"></circle><circle class="badge" cx="96" cy="84" r="14"></circle><text class="emo" x="96" y="85">🐊</text><g class="tickg"><circle class="tick" cx="107" cy="74" r="6"></circle><path class="tickmark" d="M104 74 l2 2 l4 -4"></path></g><text class="nm" x="96" y="111">동양관</text></g><g class="node" tabindex="0" role="button" aria-label="레서판다사" data-id="lesser"><circle class="halo" cx="76" cy="132" r="14" style="display: none;"></circle><circle class="badge" cx="76" cy="132" r="14"></circle><text class="emo" x="76" y="133">🦝</text><g class="tickg"><circle class="tick" cx="87" cy="122" r="6"></circle><path class="tickmark" d="M84 122 l2 2 l4 -4"></path></g><text class="nm" x="76" y="159">레서판다사</text></g><g class="node" tabindex="0" role="button" aria-label="퓨마·재규어사" data-id="puma"><circle class="halo" cx="56" cy="186" r="14" style="display: none;"></circle><circle class="badge" cx="56" cy="186" r="14"></circle><text class="emo" x="56" y="187">🐆</text><g class="tickg"><circle class="tick" cx="67" cy="176" r="6"></circle><path class="tickmark" d="M64 176 l2 2 l4 -4"></path></g><text class="nm" x="56" y="213">퓨마·재규어사</text></g><g class="node" tabindex="0" role="button" aria-label="제3아프리카관" data-id="af3"><circle class="halo" cx="44" cy="254" r="14" style="display: none;"></circle><circle class="badge" cx="44" cy="254" r="14"></circle><text class="emo" x="44" y="255">🦁</text><g class="tickg"><circle class="tick" cx="55" cy="244" r="6"></circle><path class="tickmark" d="M52 244 l2 2 l4 -4"></path></g><text class="nm" x="44" y="281">제3아프리카관</text></g><g class="node" tabindex="0" role="button" aria-label="유인원관" data-id="apes"><circle class="halo" cx="52" cy="330" r="14" style="display: none;"></circle><circle class="badge" cx="52" cy="330" r="14"></circle><text class="emo" x="52" y="331">🦍</text><g class="tickg"><circle class="tick" cx="63" cy="320" r="6"></circle><path class="tickmark" d="M60 320 l2 2 l4 -4"></path></g><text class="nm" x="52" y="357">유인원관</text></g><g class="node" tabindex="0" role="button" aria-label="제1아프리카관" data-id="af1"><circle class="halo" cx="84" cy="418" r="14" style="display: none;"></circle><circle class="badge" cx="84" cy="418" r="14"></circle><text class="emo" x="84" y="419">🦒</text><g class="tickg"><circle class="tick" cx="95" cy="408" r="6"></circle><path class="tickmark" d="M92 408 l2 2 l4 -4"></path></g><text class="nm" x="84" y="445">제1아프리카관</text></g><g class="node" tabindex="0" role="button" aria-label="점심 · 휴식" data-id="lunch"><circle class="halo" cx="156" cy="470" r="14" style="display: none;"></circle><circle class="badge" cx="156" cy="470" r="14"></circle><text class="emo" x="156" y="471">🍱</text><g class="tickg"><circle class="tick" cx="167" cy="460" r="6"></circle><path class="tickmark" d="M164 460 l2 2 l4 -4"></path></g><text class="nm" x="156" y="497">광장·점심</text></g><g class="node" tabindex="0" role="button" aria-label="제2아프리카관" data-id="af2"><circle class="halo" cx="172" cy="416" r="14" style="display: none;"></circle><circle class="badge" cx="172" cy="416" r="14"></circle><text class="emo" x="172" y="417">🦛</text><g class="tickg"><circle class="tick" cx="183" cy="406" r="6"></circle><path class="tickmark" d="M180 406 l2 2 l4 -4"></path></g><text class="nm" x="172" y="443">제2아프리카관</text></g><g class="node" tabindex="0" role="button" aria-label="대동물관" data-id="bigani"><circle class="halo" cx="184" cy="358" r="14" style="display: none;"></circle><circle class="badge" cx="184" cy="358" r="14"></circle><text class="emo" x="184" y="359">🐘</text><g class="tickg"><circle class="tick" cx="195" cy="348" r="6"></circle><path class="tickmark" d="M192 348 l2 2 l4 -4"></path></g><text class="nm" x="184" y="385">대동물관</text></g><g class="node" tabindex="0" role="button" aria-label="낙타사" data-id="camel"><circle class="halo" cx="166" cy="304" r="14" style="display: none;"></circle><circle class="badge" cx="166" cy="304" r="14"></circle><text class="emo" x="166" y="305">🐫</text><g class="tickg"><circle class="tick" cx="177" cy="294" r="6"></circle><path class="tickmark" d="M174 294 l2 2 l4 -4"></path></g><text class="nm" x="166" y="331">낙타사</text></g><g class="node" tabindex="0" role="button" aria-label="황새마을" data-id="stork"><circle class="halo" cx="190" cy="250" r="14" style="display: none;"></circle><circle class="badge" cx="190" cy="250" r="14"></circle><text class="emo" x="190" y="251">🐦</text><g class="tickg"><circle class="tick" cx="201" cy="240" r="6"></circle><path class="tickmark" d="M198 240 l2 2 l4 -4"></path></g><text class="nm" x="190" y="277">황새마을</text></g><g class="node" tabindex="0" role="button" aria-label="늑대·여우사" data-id="wolf"><circle class="halo" cx="216" cy="196" r="14" style="display: none;"></circle><circle class="badge" cx="216" cy="196" r="14"></circle><text class="emo" x="216" y="197">🐺</text><g class="tickg"><circle class="tick" cx="227" cy="186" r="6"></circle><path class="tickmark" d="M224 186 l2 2 l4 -4"></path></g><text class="nm" x="216" y="223">늑대·여우사</text></g><g class="node" tabindex="0" role="button" aria-label="곰사" data-id="bear"><circle class="halo" cx="244" cy="128" r="14" style="display: none;"></circle><circle class="badge" cx="244" cy="128" r="14"></circle><text class="emo" x="244" y="129">🐻</text><g class="tickg"><circle class="tick" cx="255" cy="118" r="6"></circle><path class="tickmark" d="M252 118 l2 2 l4 -4"></path></g><text class="nm" x="244" y="155">곰사</text></g><g class="node" tabindex="0" role="button" aria-label="공작마을" data-id="peacock"><circle class="halo" cx="296" cy="106" r="14" style="display: none;"></circle><circle class="badge" cx="296" cy="106" r="14"></circle><text class="emo" x="296" y="107">🦚</text><g class="tickg"><circle class="tick" cx="307" cy="96" r="6"></circle><path class="tickmark" d="M304 96 l2 2 l4 -4"></path></g><text class="nm" x="296" y="133">공작마을</text></g><g class="node" tabindex="0" role="button" aria-label="사슴사" data-id="deer"><circle class="halo" cx="278" cy="184" r="14" style="display: none;"></circle><circle class="badge" cx="278" cy="184" r="14"></circle><text class="emo" x="278" y="185">🦌</text><g class="tickg"><circle class="tick" cx="289" cy="174" r="6"></circle><path class="tickmark" d="M286 174 l2 2 l4 -4"></path></g><text class="nm" x="278" y="211">사슴사</text></g><g class="node" tabindex="0" role="button" aria-label="해양관" data-id="marine"><circle class="halo" cx="318" cy="238" r="14" style="display: none;"></circle><circle class="badge" cx="318" cy="238" r="14"></circle><text class="emo" x="318" y="239">🦭</text><g class="tickg"><circle class="tick" cx="329" cy="228" r="6"></circle><path class="tickmark" d="M326 228 l2 2 l4 -4"></path></g><text class="nm" x="318" y="265">해양관</text></g><g class="node" tabindex="0" role="button" aria-label="남미관" data-id="samerica"><circle class="halo" cx="322" cy="296" r="14" style="display: none;"></circle><circle class="badge" cx="322" cy="296" r="14"></circle><text class="emo" x="322" y="297">🦥</text><g class="tickg"><circle class="tick" cx="333" cy="286" r="6"></circle><path class="tickmark" d="M330 286 l2 2 l4 -4"></path></g><text class="nm" x="322" y="323">남미관</text></g><g class="node" tabindex="0" role="button" aria-label="맹금사" data-id="raptor"><circle class="halo" cx="288" cy="350" r="14" style="display: none;"></circle><circle class="badge" cx="288" cy="350" r="14"></circle><text class="emo" x="288" y="351">🦅</text><g class="tickg"><circle class="tick" cx="299" cy="340" r="6"></circle><path class="tickmark" d="M296 340 l2 2 l4 -4"></path></g><text class="nm" x="288" y="377">맹금사</text></g><g class="node" tabindex="0" role="button" aria-label="열대조류관" data-id="tropical"><circle class="halo" cx="322" cy="404" r="14" style="display: none;"></circle><circle class="badge" cx="322" cy="404" r="14"></circle><text class="emo" x="322" y="405">🦜</text><g class="tickg"><circle class="tick" cx="333" cy="394" r="6"></circle><path class="tickmark" d="M330 394 l2 2 l4 -4"></path></g><text class="nm" x="322" y="431">열대조류관</text></g><g class="node" tabindex="0" role="button" aria-label="야행관" data-id="nocturnal"><circle class="halo" cx="326" cy="460" r="14" style="display: none;"></circle><circle class="badge" cx="326" cy="460" r="14"></circle><text class="emo" x="326" y="461">🦉</text><g class="tickg"><circle class="tick" cx="337" cy="450" r="6"></circle><path class="tickmark" d="M334 450 l2 2 l4 -4"></path></g><text class="nm" x="326" y="487">야행관</text></g><g class="node" tabindex="0" role="button" aria-label="곤충관" data-id="insect"><circle class="halo" cx="300" cy="512" r="14" style="display: none;"></circle><circle class="badge" cx="300" cy="512" r="14"></circle><text class="emo" x="300" y="513">🦋</text><g class="tickg"><circle class="tick" cx="311" cy="502" r="6"></circle><path class="tickmark" d="M308 502 l2 2 l4 -4"></path></g><text class="nm" x="300" y="539">곤충관</text></g><g class="node" tabindex="0" role="button" aria-label="호주관" data-id="aussie"><circle class="halo" cx="262" cy="556" r="14" style="display: none;"></circle><circle class="badge" cx="262" cy="556" r="14"></circle><text class="emo" x="262" y="557">🦘</text><g class="tickg"><circle class="tick" cx="273" cy="546" r="6"></circle><path class="tickmark" d="M270 546 l2 2 l4 -4"></path></g><text class="nm" x="262" y="583">호주관</text></g><g class="node" tabindex="0" role="button" aria-label="홍학사" data-id="flamingo"><circle class="halo" cx="208" cy="584" r="14" style="display: none;"></circle><circle class="badge" cx="208" cy="584" r="14"></circle><text class="emo" x="208" y="585">🦩</text><g class="tickg"><circle class="tick" cx="219" cy="574" r="6"></circle><path class="tickmark" d="M216 574 l2 2 l4 -4"></path></g><text class="nm" x="208" y="611">홍학사</text></g></g></svg>
+      <div class="legend"><span><i></i>지나온 길</span><span><i class="d"></i>남은 길</span><span><i class="l"></i>리프트</span><span>✓ 본 곳</span></div>
+    </div>
+    <p class="note">공식 추천코스의 순서와 거리를 바탕으로 그린 개략도라 실제 축척·위치와 다릅니다. 갈림길에서는 현장 이정표를 같이 보세요. 지도의 점을 누르면 아래 해당 동물사로 이동합니다.</p>
+  </section>
+  <section aria-labelledby="h-stops">
+    <h2 id="h-stops">동선 <span class="tag" id="stopCount"></span></h2>
+    <div class="toolbar">
+      <button type="button" id="undoBtn" class="ghost">한 단계 되돌리기</button>
+      <button type="button" id="resetBtn" class="ghost">처음부터</button>
+      <div class="confirm" id="resetConfirm" hidden><span id="resetMsg">기록을 모두 지울까요?</span><button type="button" id="resetYes">지우기</button><button type="button" id="resetNo" class="ghost">취소</button></div>
+    </div>
+    <ol class="stops" id="stops"><li class="stop cur" id="stop-park"><div class="rail"><span class="t num">09:15</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>주차 → 리프트 1호선 탑승장</h3><span class="stamp js-stamp"></span></div><p class="animals">고객주차장 종합안내소 쪽에 주차 후 탑승장까지 도보</p><div class="chips"><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">→ 평지</span><span>다음까지 · 종합안내소 오른쪽 약 100m</span></div><div class="acts js-acts"><button type="button" class="primary js-arrive">완료</button></div></div></li><li class="stop" id="stop-lift1"><div class="rail"><span class="t num">09:30</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>리프트 1호선 → 동물원 입구(북문)</h3><span class="stamp js-stamp"></span></div><p class="animals">약 15분. 호수와 테마가든 위를 지나갑니다</p><div class="chips"><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">→ 평지</span><span>다음까지 · 내리면 바로 동물원 입구. 입장권 구매 후 입장</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">완료</button></div></div></li><li class="stop" id="stop-lift2"><div class="rail"><span class="t num">09:50</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>입장 → 리프트 2호선 → 정상</h3><span class="stamp js-stamp"></span></div><p class="animals">북문 안쪽 탑승장, 약 977m · 15분. 맹수사·동양관 앞에 내립니다</p><div class="chips"><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">→ 평지</span><span>다음까지 · 하차장 바로 앞이 맹수사</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">완료</button></div></div></li><li class="stop" id="stop-maengsu"><div class="rail"><span class="t num">10:10</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>맹수사</h3><span class="stamp js-stamp"></span></div><p class="animals">호랑이, 표범, 담비 등 소형 맹수</p><div class="chips"><span class="chip h">~17:00</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">→ 평지</span><span>다음까지 · 바로 옆 동양관</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-dongyang"><div class="rail"><span class="t num">10:25</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>동양관</h3><span class="stamp js-stamp"></span></div><p class="animals">악어, 뱀, 영장류</p><div class="chips"><span class="chip h">실내 10:00~</span><span class="chip w">영장류 재개 여부 확인</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↓ 내리막</span><span>다음까지 · 동양관 바로 아래쪽</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-lesser"><div class="rail"><span class="t num">10:40</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>레서판다사</h3><span class="stamp js-stamp"></span></div><p class="animals">레서판다 · 올해 6월 자연번식으로 새끼 2마리 출생</p><div class="chips"><span class="chip h">10:00~17:00</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↓ 내리막</span><span>다음까지 · 내리막 약 170m</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-puma"><div class="rail"><span class="t num">10:50</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>퓨마·재규어사</h3><span class="stamp js-stamp"></span></div><p class="animals">퓨마, 재규어, 코요테</p><div class="chips"><span class="chip w">재규어 야외 관람 제한 중</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↓ 내리막</span><span>다음까지 · 내리막 약 380m · 식물원 지나서</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-af3"><div class="rail"><span class="t num">11:10</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>제3아프리카관</h3><span class="stamp js-stamp"></span></div><p class="animals">사자, 치타, 세이블앤틸롭, 일런드</p><div class="chips"><span class="chip w">하이에나 야외 관람 제한 중</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↓ 내리막</span><span>다음까지 · 내리막 약 310m</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-apes"><div class="rail"><span class="t num">11:35</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>유인원관</h3><span class="stamp js-stamp"></span></div><p class="animals">고릴라, 오랑우탄, 침팬지, 원숭이류</p><div class="chips"><span class="chip h">09:30~16:30</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↓ 내리막</span><span>다음까지 · 내리막 약 370m</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-af1"><div class="rail"><span class="t num">12:05</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>제1아프리카관</h3><span class="stamp js-stamp"></span></div><p class="animals">기린, 얼룩말, 겜스복, 타조, 프레리독, 사막여우</p><div class="chips"><span class="chip h">기린 09:30~17:00</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">→ 평지</span><span>다음까지 · 평지 약 340m → 100주년 기념광장</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-lunch"><div class="rail"><span class="t num">12:25</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>점심 · 휴식</h3><span class="stamp js-stamp"></span></div><p class="animals">100주년 기념광장 일대. 매점 위치는 현장에서 확인</p><div class="chips"><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↑ 오르막</span><span>다음까지 · 광장에서 왼쪽 위 관람로</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button></div></div></li><li class="stop" id="stop-af2"><div class="rail"><span class="t num">13:05</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>제2아프리카관</h3><span class="stamp js-stamp"></span></div><p class="animals">하마, 피그미하마, 미어캣, 흰오릭스</p><div class="chips"><span class="chip w">그라스랜드 실내 관람 제한</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↑ 오르막</span><span>다음까지 · 바로 위 대동물관</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-bigani"><div class="rail"><span class="t num">13:15</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>대동물관</h3><span class="stamp js-stamp"></span></div><p class="animals">아시아코끼리, 코뿔소</p><div class="chips"><span class="chip h">코끼리 ~17:00</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↑ 오르막</span><span>다음까지 · 여기부터 곰사까지 유일한 오르막 구간</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-camel"><div class="rail"><span class="t num">13:35</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>낙타사</h3><span class="stamp js-stamp"></span></div><p class="animals">낙타</p><div class="chips"><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↑ 오르막</span><span>다음까지 · 오르막 · 황새마을 방향</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-stork"><div class="rail"><span class="t num">13:45</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>황새마을</h3><span class="stamp js-stamp"></span></div><p class="animals">황새, 저어새, 수리부엉이</p><div class="chips"><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↑ 오르막</span><span>다음까지 · 오르막 약 300m</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-wolf"><div class="rail"><span class="t num">14:00</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>늑대·여우사</h3><span class="stamp js-stamp"></span></div><p class="animals">늑대, 여우</p><div class="chips"><span class="chip h">10:00~16:00</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↑ 오르막</span><span>다음까지 · 뒷길로 약 300m, 마지막 오르막</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-bear"><div class="rail"><span class="t num">14:15</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>곰사</h3><span class="stamp js-stamp"></span></div><p class="animals">반달가슴곰, 불곰</p><div class="chips"><span class="chip h">~17:00</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">→ 평지</span><span>다음까지 · 옆으로 공작마을</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-peacock"><div class="rail"><span class="t num">14:30</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>공작마을</h3><span class="stamp js-stamp"></span></div><p class="animals">공작</p><div class="chips"><span class="chip h">10:00~16:00</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↓ 내리막</span><span>다음까지 · 여기서부터 동쪽으로 계속 내리막</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-deer"><div class="rail"><span class="t num">14:40</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>사슴사</h3><span class="stamp js-stamp"></span></div><p class="animals">사슴류 · 큰물새장은 관람 제한이라 건너뜀</p><div class="chips"><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↓ 내리막</span><span>다음까지 · 내리막 · 남미관/해양관 방향</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-marine"><div class="rail"><span class="t num">14:55</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>해양관</h3><span class="stamp js-stamp"></span></div><p class="animals">물개, 물범, 바다사자</p><div class="chips"><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">→ 평지</span><span>다음까지 · 남미관 바로 옆</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-samerica"><div class="rail"><span class="t num">15:10</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>남미관</h3><span class="stamp js-stamp"></span></div><p class="animals">나무늘보, 아나콘다, 라마</p><div class="chips"><span class="chip h">실내 10:00~17:00</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↓ 내리막</span><span>다음까지 · 내리막 · 맹금사</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-raptor"><div class="rail"><span class="t num">15:25</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>맹금사</h3><span class="stamp js-stamp"></span></div><p class="animals">독수리, 콘도르</p><div class="chips"><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↓ 내리막</span><span>다음까지 · 물길 건너 갈림길에서 열대조류관 방향</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-tropical"><div class="rail"><span class="t num">15:35</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>열대조류관</h3><span class="stamp js-stamp"></span></div><p class="animals">앵무새 등 열대 조류</p><div class="chips"><span class="chip h">실내 09:30~17:00</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↓ 내리막</span><span>다음까지 · 내리막 약 270m</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-nocturnal"><div class="rail"><span class="t num">15:50</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>야행관</h3><span class="stamp js-stamp"></span></div><p class="animals">올빼미, 부엉이, 박쥐</p><div class="chips"><span class="chip h">실내 09:30~17:00</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">→ 평지</span><span>다음까지 · 약 100m</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-insect"><div class="rail"><span class="t num">16:00</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>곤충관</h3><span class="stamp js-stamp"></span></div><p class="animals">곤충류</p><div class="chips"><span class="chip h">실내 10:00~17:00</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">→ 평지</span><span>다음까지 · 바로 옆 호주관</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-aussie"><div class="rail"><span class="t num">16:15</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>호주관</h3><span class="stamp js-stamp"></span></div><p class="animals">캥거루, 에뮤</p><div class="chips"><span class="chip h">실내 09:30~17:00</span><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">↓ 내리막</span><span>다음까지 · 약 300m + 다리 건너 100m</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-flamingo"><div class="rail"><span class="t num">16:30</span><span class="dot"></span><span class="ln"></span></div><div class="card"><div class="hd"><h3>홍학사</h3><span class="stamp js-stamp"></span></div><p class="animals">홍학</p><div class="chips"><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="go"><span class="arr">→ 평지</span><span>다음까지 · 정문 바로 앞</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">도착 · 관람 완료</button><button type="button" class="ghost js-skip">건너뛰기</button></div></div></li><li class="stop" id="stop-exit"><div class="rail"><span class="t num">16:40</span><span class="dot"></span></div><div class="card"><div class="hd"><h3>정문 → 주차장</h3><span class="stamp js-stamp"></span></div><p class="animals">리프트 1호선 하행(18:00까지), 코끼리열차(어른 2,000원), 도보 중 선택. 현장 정산이면 정문 앞 사전정산기</p><div class="chips"><span class="chip w js-soon" hidden="">곧 마감</span></div><div class="acts js-acts" hidden=""><button type="button" class="primary js-arrive">완료</button></div></div></li></ol>
+  </section>
+  <div class="folds">
+  <details class="fold" id="fold-h-check">
+    <summary><span class="ft">당일 체크</span><span class="tag">운영시간 · 리프트 · 관람 제한</span></summary>
+    <div class="fold-body">
+    <div class="facts">
+      <div class="fact"><b>동물원 운영</b><span class="num">09:00 – 17:00</span><em>입장 마감 16:00 · 11월은 동절기 시간</em></div>
+      <div class="fact"><b>리프트 운행 (11월)</b><span class="num">1호선 09:30–18:00</span><em>2호선 09:30–17:10 · 마감 20분 전까지 탑승</em></div>
+      <div class="fact ok"><b>리프트 안전점검 운휴일</b><span>11월 24일(화) — 4일은 정상 운행</span><em>리프트는 12월 30일 운영 종료 예정, 올해가 마지막 시즌</em></div>
+      <div class="fact"><b>일찍 닫는 곳</b><span class="num">늑대·여우사, 공작마을 16:00</span><em>유인원관 16:30 · 나머지 대부분 17:00</em></div>
+    </div>
+    <ul class="alerts">
+      <li><b>관람 제한</b> 큰물새장(시설 보수, 기간 미정), 제2아프리카관 그라스랜드 실내(별도 안내 시까지), 하이에나·재규어 야외 방사장</li>
+      <li><b>당일 확인</b> 동양관 영장류는 10월 31일까지 공사 예정이었으니 재개됐는지 입구에서 확인. 추우면 일부 동물은 실내로 일찍 들어갑니다.</li>
+    </ul>
+    </div>
+  </details>
+  <details class="fold" id="fold-h-park">
+    <summary><span class="ft">주차 꿀팁</span><span class="tag">요금 · 정산 · 리프트 표</span></summary>
+    <div class="fold-body">
+    <ul class="tips">
+      <li><span class="k">P</span><p><strong>내비는 "서울대공원 주차장"(과천시 대공원광장로 102)</strong>대형 고객주차장(약 6,600대)입니다. 평일이라 자리 걱정은 거의 없고, <b>종합안내소 쪽</b>에 세우세요. 리프트 1호선 탑승장이 종합안내소에서 오른쪽으로 100m라 걷는 거리가 제일 짧습니다. 서울랜드 동문 주차장은 30분당 2,000원이라 피하세요.</p></li>
+      <li><span class="k">₩</span><p><strong>카카오T 자동정산 미리 등록</strong>앱에서 차량·카드를 등록해 두면 하이패스처럼 나갑니다. 하루 종일 있으면 현장 정산 최대 6,000원 → 모바일 최대 5,000원.</p></li>
+      <li><span class="k">%</span><p><strong>경차·친환경차 50% 감면</strong>모바일 정산이면 앱에서 미리 감면 신청, 현장이면 정산기 호출 버튼. 전기차 충전 차량은 1시간 무료 후 50% (충전소는 산들3주차장).</p></li>
+      <li><span class="k">↺</span><p><strong>현장 정산이면 나오는 길에 사전정산</strong>동물원 정문 앞(2대)·종합안내소 앞(4대) 무인정산기에서 계산하면 30분 안에만 나가면 됩니다. 출구 줄을 안 섭니다.</p></li>
+    </ul>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>일반 승용차</th><th>기본 2시간</th><th>30분 초과마다</th><th>하루 최대</th></tr></thead>
+        <tbody>
+          <tr><td>카카오T 모바일</td><td class="num">3,000원</td><td class="num">1,000원</td><td class="num best">5,000원</td></tr>
+          <tr><td>현장·사전정산</td><td class="num">4,000원</td><td class="num">1,500원</td><td class="num">6,000원</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">리프트는 구간마다 표가 따로 필요합니다. 1호선(주차장→동물원) + 2호선(동물원 안→정상) 두 번 타니까 <b>2회권(어른 16,000원)</b>이 맞고, 동물원 입장권(어른 5,000원)은 별도입니다. 2호선은 입장권이 있어야 탈 수 있어요. 여행 앱 리프트 패키지가 더 싼 경우가 있으니 몇 회권인지 보고 고르세요.</p>
+    </div>
+  </details>
+  <details class="fold" id="fold-notes">
+    <summary><span class="ft">시간 계획 · 출처</span><span class="tag">공식 안내 링크</span></summary>
+    <div class="fold-body foot">
+    <p>권장 시각은 각 동물사 10~20분 관람 기준입니다. 당일엔 위 막대에 계획 대비 빠르고 늦음이 표시돼요. 15시쯤 늦어져 있으면 동쪽 실내관(곤충관·야행관)에서 시간을 줄이세요.</p>
+    <ul>
+      <li><a href="https://grandpark.seoul.go.kr/conts/contsView/ko/S001001002005.do" target="_blank" rel="noopener">서울대공원 관람안내 (운영시간·관람제한)</a></li>
+      <li><a href="https://grandpark.seoul.go.kr/conts/contsView/ko/S001001001004002.do" target="_blank" rel="noopener">스카이리프트 시간·요금</a></li>
+      <li><a href="https://grandpark.seoul.go.kr/conts/contsView/ko/S001001001007.do" target="_blank" rel="noopener">주차장 이용안내</a></li>
+      <li><a href="https://grandpark.seoul.go.kr/conts/contsView/ko/S001002002002001.do" target="_blank" rel="noopener">동물원 인기코스 (거리 근거)</a></li>
+    </ul>
+    </div>
+  </details>
+  </div>
+</div>
+
+<script>
+(function(){
+  // ---- data -------------------------------------------------------------
+  var P = { // 그림 지도 좌표 (개략)
+    gate:[150,606], top:[128,58], maengsu:[200,52], dongyang:[96,84], lesser:[76,132], puma:[56,186],
+    af3:[44,254], apes:[52,330], af1:[84,418], plaza:[156,470], af2:[172,416], bigani:[184,358],
+    camel:[166,304], stork:[190,250], wolf:[216,196], bear:[244,128], peacock:[296,106], deer:[278,184],
+    marine:[318,238], samerica:[322,296], raptor:[288,350], tropical:[322,404], nocturnal:[326,460],
+    insect:[300,512], aussie:[262,556], flamingo:[208,584]
+  };
+  var EMO = {lift1:"🎟️", lift2:"🚡", maengsu:"🐯", dongyang:"🐊", lesser:"🦝", puma:"🐆", af3:"🦁", apes:"🦍", af1:"🦒",
+    lunch:"🍱", af2:"🦛", bigani:"🐘", camel:"🐫", stork:"🐦", wolf:"🐺", bear:"🐻", peacock:"🦚", deer:"🦌", marine:"🦭",
+    samerica:"🦥", raptor:"🦅", tropical:"🦜", nocturnal:"🦉", insect:"🦋", aussie:"🦘", flamingo:"🦩"};
+  // slope: d=내리막 u=오르막 f=평지
+  var S = [
+    {id:"park", name:"주차 → 리프트 1호선 탑승장", t:"09:15", kind:"move", animals:"고객주차장 종합안내소 쪽에 주차 후 탑승장까지 도보", go:["f","종합안내소 오른쪽 약 100m"]},
+    {id:"lift1", name:"리프트 1호선 → 동물원 입구(북문)", t:"09:30", kind:"move", map:"gate", animals:"약 15분. 호수와 테마가든 위를 지나갑니다", go:["f","내리면 바로 동물원 입구. 입장권 구매 후 입장"], liftTo:true},
+    {id:"lift2", name:"입장 → 리프트 2호선 → 정상", t:"09:50", kind:"move", map:"top", animals:"북문 안쪽 탑승장, 약 977m · 15분. 맹수사·동양관 앞에 내립니다", go:["f","하차장 바로 앞이 맹수사"], lift:true},
+    {id:"maengsu", name:"맹수사", t:"10:10", map:"maengsu", animals:"호랑이, 표범, 담비 등 소형 맹수", close:1020, hours:"~17:00", go:["f","바로 옆 동양관"]},
+    {id:"dongyang", name:"동양관", t:"10:25", map:"dongyang", animals:"악어, 뱀, 영장류", hours:"실내 10:00~", warn:"영장류 재개 여부 확인", close:1020, go:["d","동양관 바로 아래쪽"]},
+    {id:"lesser", name:"레서판다사", t:"10:40", map:"lesser", animals:"레서판다 · 올해 6월 자연번식으로 새끼 2마리 출생", hours:"10:00~17:00", close:1020, go:["d","내리막 약 170m"]},
+    {id:"puma", name:"퓨마·재규어사", t:"10:50", map:"puma", animals:"퓨마, 재규어, 코요테", warn:"재규어 야외 관람 제한 중", close:1020, go:["d","내리막 약 380m · 식물원 지나서"]},
+    {id:"af3", name:"제3아프리카관", t:"11:10", map:"af3", animals:"사자, 치타, 세이블앤틸롭, 일런드", warn:"하이에나 야외 관람 제한 중", close:1020, go:["d","내리막 약 310m"]},
+    {id:"apes", name:"유인원관", t:"11:35", map:"apes", animals:"고릴라, 오랑우탄, 침팬지, 원숭이류", hours:"09:30~16:30", close:990, go:["d","내리막 약 370m"]},
+    {id:"af1", name:"제1아프리카관", t:"12:05", map:"af1", animals:"기린, 얼룩말, 겜스복, 타조, 프레리독, 사막여우", hours:"기린 09:30~17:00", close:1020, go:["f","평지 약 340m → 100주년 기념광장"]},
+    {id:"lunch", name:"점심 · 휴식", t:"12:25", kind:"rest", map:"plaza", animals:"100주년 기념광장 일대. 매점 위치는 현장에서 확인", go:["u","광장에서 왼쪽 위 관람로"]},
+    {id:"af2", name:"제2아프리카관", t:"13:05", map:"af2", animals:"하마, 피그미하마, 미어캣, 흰오릭스", warn:"그라스랜드 실내 관람 제한", close:1020, go:["u","바로 위 대동물관"]},
+    {id:"bigani", name:"대동물관", t:"13:15", map:"bigani", animals:"아시아코끼리, 코뿔소", hours:"코끼리 ~17:00", close:1020, go:["u","여기부터 곰사까지 유일한 오르막 구간"]},
+    {id:"camel", name:"낙타사", t:"13:35", map:"camel", animals:"낙타", close:1020, go:["u","오르막 · 황새마을 방향"]},
+    {id:"stork", name:"황새마을", t:"13:45", map:"stork", animals:"황새, 저어새, 수리부엉이", close:1020, go:["u","오르막 약 300m"]},
+    {id:"wolf", name:"늑대·여우사", t:"14:00", map:"wolf", animals:"늑대, 여우", hours:"10:00~16:00", close:960, go:["u","뒷길로 약 300m, 마지막 오르막"]},
+    {id:"bear", name:"곰사", t:"14:15", map:"bear", animals:"반달가슴곰, 불곰", hours:"~17:00", close:1020, go:["f","옆으로 공작마을"]},
+    {id:"peacock", name:"공작마을", t:"14:30", map:"peacock", animals:"공작", hours:"10:00~16:00", close:960, go:["d","여기서부터 동쪽으로 계속 내리막"]},
+    {id:"deer", name:"사슴사", t:"14:40", map:"deer", animals:"사슴류 · 큰물새장은 관람 제한이라 건너뜀", close:1020, go:["d","내리막 · 남미관/해양관 방향"]},
+    {id:"marine", name:"해양관", t:"14:55", map:"marine", animals:"물개, 물범, 바다사자", close:1020, go:["f","남미관 바로 옆"]},
+    {id:"samerica", name:"남미관", t:"15:10", map:"samerica", animals:"나무늘보, 아나콘다, 라마", hours:"실내 10:00~17:00", close:1020, go:["d","내리막 · 맹금사"]},
+    {id:"raptor", name:"맹금사", t:"15:25", map:"raptor", animals:"독수리, 콘도르", close:1020, go:["d","물길 건너 갈림길에서 열대조류관 방향"]},
+    {id:"tropical", name:"열대조류관", t:"15:35", map:"tropical", animals:"앵무새 등 열대 조류", hours:"실내 09:30~17:00", close:1020, go:["d","내리막 약 270m"]},
+    {id:"nocturnal", name:"야행관", t:"15:50", map:"nocturnal", animals:"올빼미, 부엉이, 박쥐", hours:"실내 09:30~17:00", close:1020, go:["f","약 100m"]},
+    {id:"insect", name:"곤충관", t:"16:00", map:"insect", animals:"곤충류", hours:"실내 10:00~17:00", close:1020, go:["f","바로 옆 호주관"]},
+    {id:"aussie", name:"호주관", t:"16:15", map:"aussie", animals:"캥거루, 에뮤", hours:"실내 09:30~17:00", close:1020, go:["d","약 300m + 다리 건너 100m"]},
+    {id:"flamingo", name:"홍학사", t:"16:30", map:"flamingo", animals:"홍학", close:1020, go:["f","정문 바로 앞"]},
+    {id:"exit", name:"정문 → 주차장", t:"16:40", kind:"move", map:"gate", animals:"리프트 1호선 하행(18:00까지), 코끼리열차(어른 2,000원), 도보 중 선택. 현장 정산이면 정문 앞 사전정산기", go:null}
+  ];
+  var KEY = "seoulzoo-1104-v1";
+  var VISIT = "2026-11-04";
+  var animalIds = S.filter(function(s){return !s.kind;}).map(function(s){return s.id;});
+
+  // ---- state ------------------------------------------------------------
+  function empty(){ return {done:{}, skip:{}, order:[]}; }
+  function norm(o){ o=o||{}; return {done:Object.assign({},o.done||{}), skip:Object.assign({},o.skip||{}), order:Array.isArray(o.order)?o.order.slice():[]}; }
+  function loadLocal(){ try { var raw = localStorage.getItem(KEY); if (raw) return norm(JSON.parse(raw)); } catch(e) {} return empty(); }
+  var st = loadLocal(), storeOk = true;
+  try { localStorage.setItem(KEY+":t","1"); localStorage.removeItem(KEY+":t"); } catch(e) { storeOk = false; }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e) {} }
+  function setSync(){
+    var s = document.getElementById("sync");
+    s.textContent = storeOk ? "체크 기록은 이 폰에만 저장돼요 · 일행은 각자 폰에서 체크" : "이 브라우저는 저장이 막혀 있어서 페이지를 닫으면 기록이 사라져요";
+    s.className = "sync" + (storeOk ? " live" : " err");
+  }
+  function curIndex(){ for (var i=0;i<S.length;i++){ if(!st.done[S[i].id] && !st.skip[S[i].id]) return i; } return S.length; }
+  function mins(hhmm){ var p=hhmm.split(":"); return (+p[0])*60+(+p[1]); }
+  function fmt(ts){ var d=new Date(ts); return ("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2); }
+  function isVisitDay(){ var d=new Date(); var s=d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2); return s===VISIT; }
+  function nowMin(){ var d=new Date(); return d.getHours()*60+d.getMinutes(); }
+  var SL = {d:"↓ 내리막", u:"↑ 오르막", f:"→ 평지"};
+
+  // ---- map --------------------------------------------------------------
+  var NS="http://www.w3.org/2000/svg", svg=document.getElementById("map");
+  function el(n,a,p){ var e=document.createElementNS(NS,n); for(var k in a) e.setAttribute(k,a[k]); (p||svg).appendChild(e); return e; }
+  var pre = !!svg.querySelector(".ground");
+  var mapSeq = S.map(function(s,i){return {i:i,s:s};}).filter(function(o){return o.s.map;});
+  function ptOf(o){ return P[o.s.id==="exit" ? "gate" : o.s.map]; }
+  function curve(pa,pb){ var cx=(pa[0]+pb[0])/2+(pb[1]-pa[1])*0.08, cy=(pa[1]+pb[1])/2-(pb[0]-pa[0])*0.08; return "M"+pa[0]+" "+pa[1]+" Q"+cx+" "+cy+" "+pb[0]+" "+pb[1]; }
+  if (!pre){
+    // 땅, 청계산 능선, 숲, 연못, 광장
+    el("rect",{"class":"ground",x:0,y:0,width:360,height:640});
+    el("path",{"class":"meadow",d:"M0 640 L0 470 C60 430 120 520 200 500 C270 482 320 520 360 500 L360 640 Z"});
+    el("path",{"class":"ridge",d:"M0 0 L360 0 L360 46 C330 30 300 58 262 36 C232 18 210 40 176 24 C150 12 120 34 90 22 C60 10 30 34 0 26 Z"});
+    el("path",{"class":"ridge2",d:"M0 0 L360 0 L360 22 C320 10 290 30 250 14 C220 4 190 20 160 8 C130 0 100 16 70 6 C40 0 20 12 0 8 Z"});
+    el("ellipse",{"class":"water",cx:236,cy:620,rx:48,ry:14});
+    el("ellipse",{"class":"water",cx:300,cy:612,rx:22,ry:8});
+    el("ellipse",{"class":"plazaf",cx:156,cy:470,rx:26,ry:16});
+    [[18,60],[30,104],[14,170],[22,214],[12,300],[20,380],[16,450],[34,520],[70,580],[100,610],[106,520],[110,236],[112,180],[150,110],[250,40],[330,62],[344,140],[346,196],[340,352],[344,540],[232,282],[252,330],[236,416],[250,468],[214,450],[118,300],[120,384],[60,480],[300,566],[276,256]].forEach(function(t,i){
+      el("circle",{"class":i%2?"tr":"tr2",cx:t[0],cy:t[1],r:i%3?7:9});
+      el("circle",{"class":i%2?"tr2":"tr",cx:t[0]+6,cy:t[1]+4,r:i%3?5:6});
+    });
+    el("text",{"class":"lbl",x:10,y:16}).textContent="▲ 청계산 · 동물원 정상";
+    el("text",{"class":"lbl",x:14,y:632}).textContent="▼ 정문 · 주차장";
+    el("text",{"class":"lbl",x:252,y:630}).textContent="홍학 연못";
+    el("g",{"class":"roads"}); el("g",{"class":"liftg"}); el("g",{"class":"legs"}); el("g",{"class":"nodes"});
+    var roads=svg.querySelector(".roads"), liftg=svg.querySelector(".liftg");
+    for (var r=1;r<mapSeq.length;r++){
+      var ra=mapSeq[r-1], rb=mapSeq[r], qa=ptOf(ra), qb=ptOf(rb);
+      if (rb.s.lift){
+        el("line",{"class":"cable",x1:qa[0]-22,y1:qa[1]-12,x2:qb[0],y2:qb[1]+14},liftg);
+        for (var c=1;c<9;c++){ var yy=qa[1]-12+(qb[1]+14-(qa[1]-12))*c/9, xx=qa[0]-22+(qb[0]-(qa[0]-22))*c/9; el("rect",{"class":"chair",x:xx-3,y:yy,width:6,height:5,rx:1.5},liftg); }
+        el("text",{"class":"lbl",x:110,y:300,transform:"rotate(-90 110 300)"},liftg).textContent="스카이리프트 2호선 · 977m";
+      } else { el("path",{"class":"road",d:curve(qa,qb)},roads); }
+    }
+  }
+  var legLayer = svg.querySelector(".legs"), nodeLayer = svg.querySelector(".nodes");
+  var legs=[];
+  for (var k=1;k<mapSeq.length;k++){
+    var a=mapSeq[k-1], b=mapSeq[k], pa=ptOf(a), pb=ptOf(b);
+    var isLift = !!b.s.lift;
+    var path = pre ? legLayer.querySelector('[data-to="'+b.i+'"]') : null;
+    if (!path){
+      path = isLift ? el("path",{"class":"lift",d:"M"+(pa[0]-22)+" "+(pa[1]-12)+" L"+pb[0]+" "+(pb[1]+14)},legLayer)
+                    : el("path",{"class":"leg",d:curve(pa,pb)},legLayer);
+      path.setAttribute("data-to", b.i);
+    }
+    legs.push({to:b.i, el:path, lift:isLift});
+  }
+  var nodeEls={};
+  mapSeq.forEach(function(o){
+    if (o.s.id==="exit") return;
+    var p=P[o.s.map], g = pre ? nodeLayer.querySelector('[data-id="'+o.s.id+'"]') : null, halo;
+    if (g) { halo = g.querySelector(".halo"); }
+    else {
+      g=el("g",{"class":"node",tabindex:"0",role:"button","aria-label":o.s.name,"data-id":o.s.id},nodeLayer);
+      halo=el("circle",{"class":"halo",cx:p[0],cy:p[1],r:14},g); halo.style.display="none";
+      el("circle",{"class":"badge",cx:p[0],cy:p[1],r:14},g);
+      el("text",{"class":"emo",x:p[0],y:p[1]+1},g).textContent=EMO[o.s.id]||"•";
+      var tg=el("g",{"class":"tickg"},g);
+      el("circle",{"class":"tick",cx:p[0]+11,cy:p[1]-10,r:6},tg);
+      el("path",{"class":"tickmark",d:"M"+(p[0]+8)+" "+(p[1]-10)+" l2 2 l4 -4"},tg);
+      var label = o.s.id==="lift1"?"북문(입구)": o.s.id==="lift2"?"리프트 하차": o.s.id==="lunch"?"광장·점심": o.s.name;
+      el("text",{"class":"nm",x:p[0],y:p[1]+27},g).textContent=label;
+    }
+    function jump(){ var t=document.getElementById("stop-"+o.s.id); if(t){ t.scrollIntoView({behavior:"smooth",block:"center"}); } }
+    g.addEventListener("click",jump);
+    g.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){e.preventDefault();jump();} });
+    nodeEls[o.s.id]={g:g,halo:halo};
+  });
+
+  // ---- list -------------------------------------------------------------
+  var list=document.getElementById("stops");
+  S.forEach(function(s,i){
+    var li=document.getElementById("stop-"+s.id);
+    if (!li){ li=document.createElement("li"); li.className="stop"; li.id="stop-"+s.id;
+    var chips="";
+    if (s.hours) chips+='<span class="chip h">'+s.hours+'</span>';
+    if (s.warn) chips+='<span class="chip w">'+s.warn+'</span>';
+    chips+='<span class="chip w js-soon" hidden>곧 마감</span>';
+    li.innerHTML =
+      '<div class="rail"><span class="t num">'+s.t+'</span><span class="dot"></span>'+(i<S.length-1?'<span class="ln"></span>':'')+'</div>'+
+      '<div class="card">'+
+        '<div class="hd"><h3>'+s.name+'</h3><span class="stamp js-stamp"></span></div>'+
+        '<p class="animals">'+s.animals+'</p>'+
+        (chips?'<div class="chips">'+chips+'</div>':'')+
+        (s.go?'<div class="go"><span class="arr">'+SL[s.go[0]]+'</span><span>다음까지 · '+s.go[1]+'</span></div>':'')+
+        '<div class="acts js-acts" hidden><button type="button" class="primary js-arrive">'+(s.kind==="move"?"완료":"도착 · 관람 완료")+'</button>'+
+        (s.kind?'':'<button type="button" class="ghost js-skip">건너뛰기</button>')+'</div>'+
+      '</div>';
+    list.appendChild(li); }
+    li.querySelector(".js-arrive").addEventListener("click",function(){ st.done[s.id]=Date.now(); st.order.push(s.id); save(); render(true); });
+    var sk=li.querySelector(".js-skip");
+    if (sk) sk.addEventListener("click",function(){ st.skip[s.id]=true; st.order.push(s.id); save(); render(true); });
+  });
+
+  document.getElementById("undoBtn").addEventListener("click",function(){
+    var last=st.order.pop(); if(!last) return; delete st.done[last]; delete st.skip[last]; save(); render(true);
+  });
+  var rc=document.getElementById("resetConfirm");
+  document.getElementById("resetBtn").addEventListener("click",function(){ rc.hidden=false; });
+  document.getElementById("resetNo").addEventListener("click",function(){ rc.hidden=true; });
+  document.getElementById("resetYes").addEventListener("click",function(){ st=empty(); save(); rc.hidden=true; render(true); });
+
+  // ---- render -----------------------------------------------------------
+  function render(scroll){
+    var ci=curIndex(), visit=isVisitDay(), nm=nowMin();
+    S.forEach(function(s,i){
+      var li=document.getElementById("stop-"+s.id);
+      var state = st.done[s.id]?"done": st.skip[s.id]?"skip": i===ci?"cur":"";
+      li.className="stop"+(state?" "+state:"");
+      li.querySelector(".js-acts").hidden = i!==ci;
+      li.querySelector(".js-stamp").textContent = st.done[s.id] ? "✓ "+fmt(st.done[s.id]) : st.skip[s.id] ? "건너뜀" : "";
+      var soon=li.querySelector(".js-soon");
+      soon.hidden = !(visit && s.close && !st.done[s.id] && !st.skip[s.id] && nm>=s.close-45 && nm<s.close);
+      var ne=nodeEls[s.id];
+      if (ne){ ne.g.setAttribute("class","node"+(state?" "+state:"")); ne.halo.style.display = state==="cur"?"":"none"; }
+    });
+    // gate node is shared by lift1 and exit
+    if (nodeEls.lift1 && ci===S.length-1){ nodeEls.lift1.g.setAttribute("class","node cur"); nodeEls.lift1.halo.style.display=""; }
+    legs.forEach(function(l){
+      var target=S[l.to], passed = st.done[target.id]||st.skip[target.id];
+      var isNext = l.to===ci;
+      l.el.setAttribute("class",(l.lift?"lift":"leg")+(passed?" done":isNext?" next":""));
+    });
+    // bar
+    var seen = animalIds.filter(function(id){return st.done[id];}).length;
+    var settled = animalIds.filter(function(id){return st.done[id]||st.skip[id];}).length;
+    document.getElementById("progFill").style.width = (settled/animalIds.length*100)+"%";
+    document.getElementById("stopCount").textContent = "동물사 "+animalIds.length+"곳";
+    var bn=document.getElementById("barNext"), bd=document.getElementById("barDir"), pace=document.getElementById("pace");
+    if (ci>=S.length){
+      bn.innerHTML="완주! 수고했어요<small>동물사 "+seen+"곳 관람</small>"; bd.textContent="🏁 끝"; pace.textContent=""; pace.className="pace"; return;
+    }
+    var cur=S[ci], prev=ci>0?S[ci-1]:null;
+    var dir = prev && prev.go ? SL[prev.go[0]] : "→ 평지";
+    var how = prev && prev.go ? prev.go[1] : "종합안내소 오른쪽 약 100m";
+    bn.innerHTML = "다음: "+cur.name+"<small>"+(prev?"지금 "+prev.name+" · ":"출발 전 · ")+how+"</small>";
+    bd.textContent = dir;
+    var txt = "동물사 "+seen+" / "+animalIds.length+" 관람";
+    pace.className="pace";
+    if (visit){
+      var diff = nm - mins(cur.t);
+      if (diff>15){ txt += " · 계획보다 "+diff+"분 늦음"; pace.className="pace late"; }
+      else if (diff<-15){ txt += " · 계획보다 "+(-diff)+"분 여유"; }
+      else txt += " · 계획대로 진행 중";
+      var urgent = S.slice(ci).filter(function(s){ return s.close && s.close<1020 && nm>=s.close-45 && nm<s.close; });
+      if (urgent.length){ txt += " · "+urgent.map(function(s){return s.name;}).join(", ")+" 곧 마감"; pace.className="pace late"; }
+    } else {
+      txt += " · 11월 4일 당일엔 계획 대비 시간이 표시돼요";
+    }
+    pace.textContent = txt;
+    if (scroll){ var t=document.getElementById("stop-"+cur.id); if(t) t.scrollIntoView({behavior:"smooth",block:"center"}); }
+  }
+  setSync(); render(false);
+  setInterval(function(){ render(false); }, 60000);
+})();
+</script>
+</body>
+</html>
